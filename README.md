@@ -4,7 +4,7 @@
 
 # Запуск
 ```
-git clone https://github.com/ShasherinaAV/lab_IIS.git///
+git clone https:/github.com/ShasherinaAV/lab_IIS.git/
 cd {директория с проектом}
 python3 -m venv .venv_IIS
 source .venv_IIS/bin/activate
