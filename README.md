@@ -31,6 +31,7 @@ sh start_mlflow.sh
 2. sex - пол пациента (0 = женщина, 1 = мужчина)
 3. cp - тип боли в груди (0 = типичная стенокардия, 1 = атипичная стенокардия, 2 = неангиальная боль, 3 = бессимптомная)
 4. <u>trestbps</u> - артериальное давление в состоянии покоя измеренное в мм рт.ст. при поступлении. (94 - 200)
+5. <u>chol</u> - уровень холестерина в крови в мг/дл. (126 - 564)
 6. fbs - уровень сахара в крови натощак > 120 мг/дл? (1 = верно, 0 = неверно)
 7. restecg - результаты электрокардиографии в состоянии покоя (0 = в норме, 1 = аномалия зубца ST-T, 2 = возможная или определенная гипертрофия левого желудочка)
 8. <u>thalach</u> - максимальная достигнутая частота сердечных сокращений, достигнутая во время тестирования с физической нагрузкой (71 - 202)
@@ -88,7 +89,7 @@ ml_service:
 
 - requirements.txt - файл используемый для сборки образа, в нем находятся только необходимые зависимости и их версии
 
-- Docerfile - файл с описанием алгоритма создания образа
+- Docerfile - файл с описанием алгоритма сборки образа
 
 - scrin - скриншоты FastApi
 
@@ -96,3 +97,35 @@ ml_service:
 models:
 
 - get_model.py - скрипт для выгрузки модели из mlflow
+
+
+**Команды для создания образа и запуска контейнера:**
+```
+docker build . --tag disease_model:0
+docker run -p 8001:8000 -v $(pwd)/../models:/models disease_model:0
+```
+
+**Проверка роботоспособности сервиса:**
+
+import requests
+import random
+
+params = {'id': 4}
+data = {
+    "age":random.randint(15,90),
+    "sex":random.randint(0,1),
+    "cp":random.randint(0,3),
+    "trestbps":random.randint(70,220),
+    "chol":random.randint(100,600),
+    "fbs":random.randint(0,1),
+    "restecg":random.randint(0,2),
+    "thalach":random.randint(60,220),
+    "exang":random.randint(1,0),
+    "oldpeak":3.5,
+    "slope":random.randint(0,2),
+    "ca":random.randint(0,4),
+    "thal":random.randint(1,3),
+    "target":random.randint(0,1)} 
+
+response = requests.post('http://127.0.0.1:8001/api/prediction', params=params, json=data)
+print(response.json())

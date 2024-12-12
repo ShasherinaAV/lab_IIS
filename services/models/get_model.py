@@ -11,7 +11,7 @@ tracking_uri = f"http://{TRACKING_SERVER_HOST}:{TRACKING_SERVER_PORT}"
 mlflow.set_tracking_uri(tracking_uri)   
 mlflow.set_registry_uri(registry_uri)   
 
-RUN_NAME = 'edd6d673bb554496a10e046cd3434df0'
+RUN_NAME = '631930cba3004003a5b966dc1e642aec'
 loaded_model = mlflow.sklearn.load_model(f'runs:/{RUN_NAME}/models')
 
 with open('model.pkl', 'wb+') as f:
