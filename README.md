@@ -99,14 +99,16 @@ models:
 - get_model.py - скрипт для выгрузки модели из mlflow
 
 
+
 **Команды для создания образа и запуска контейнера:**
 ```
 docker build . --tag disease_model:0
 docker run -p 8001:8000 -v $(pwd)/../models:/models disease_model:0
 ```
 
-**Проверка роботоспособности сервиса:**
 
+**Проверка роботоспособности сервиса:**
+```
 import requests
 import random
 
@@ -129,3 +131,4 @@ data = {
 
 response = requests.post('http://127.0.0.1:8001/api/prediction', params=params, json=data)
 print(response.json())
+```
