@@ -122,7 +122,7 @@ data = {
     "fbs":random.randint(0,1),
     "restecg":random.randint(0,2),
     "thalach":random.randint(60,220),
-    "exang":random.randint(1,0),
+    "exang":random.randint(0,1),
     "oldpeak":3.5,
     "slope":random.randint(0,2),
     "ca":random.randint(0,4),
