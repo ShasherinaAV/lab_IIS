@@ -133,15 +133,50 @@ response = requests.post('http://127.0.0.1:8001/api/prediction', params=params, 
 print(response.json())
 ```
 
-# 
+# (Лр4) Мониторинг микросервиса
 
-prediction_metric_histogram_bucket
-rate(http_requests_total[1m])*60
-rate(http_requests_total{status!="2xx"}[1m])
+Был налажен веб-интерфейс prometheus, существующий для сбора и хранения метрик, генерируемых сервисами. Доступ к веб-интерфейсу осуществляется по адресу http://localhost:9090.
+
+Были получены следующие скриншоты:
+
+Гистограмма предсказаний модели
+![Гистограмма предсказаний модели](services/prometheus/prometheus.png)
+
+
+Частота запросов к сервису
+![Частота запросов к сервису](services/prometheus/rate.png)
+
+
+Частота запросов к сервису с кодами ошибок 4** и 5**
+
+![Гистограмма предсказаний модели](services/prometheus/error.png)
 
 
 
-histogram_quantile(0.95, sum(rate(prediction_metric_histogram_bucket[$__rate_interval])) by (le))
-prediction_metric_histogram_bucket
-rate(http_requests_total[1m])*60
-rate(process_cpu_seconds_total[$__rate_interval])
+# Дашбоард
+
+ Был разработан сервис grafana. Сервис, созданный для визуализации метрик путём создания дашбордов. Веб-интерфейс запускается по адресу http://localhost:3000. В качестве database используется сервис prometheus.
+
+Панель
+
+![Панель](services/grafana/grafana.png)
+
+
+
+Описание метрик, полученных на дашборде выше:
+
+1.Первый график 
+
+Среднее предсказанное значение
+
+2. Предсказания
+
+Гистограмма, отображающая распределение предсказаний модели по классам. 
+
+3. Запросы
+
+Временной ряд, показывающий количество полученных запросов. Уровень мониторинга: прикладной уровень.
+
+4. CPU seconds total
+
+Показывает время работы процессора
