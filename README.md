@@ -132,3 +132,16 @@ data = {
 response = requests.post('http://127.0.0.1:8001/api/prediction', params=params, json=data)
 print(response.json())
 ```
+
+# 
+
+prediction_metric_histogram_bucket
+rate(http_requests_total[1m])*60
+rate(http_requests_total{status!="2xx"}[1m])
+
+
+
+histogram_quantile(0.95, sum(rate(prediction_metric_histogram_bucket[$__rate_interval])) by (le))
+prediction_metric_histogram_bucket
+rate(http_requests_total[1m])*60
+rate(process_cpu_seconds_total[$__rate_interval])
